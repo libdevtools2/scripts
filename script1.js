@@ -2,10 +2,8 @@
 // LOCKER CONTROL
 // ===============================
 
-// simpan fungsi _HW asli
 let __realLocker = null;
 
-// blok _HW supaya tidak jalan saat page load
 Object.defineProperty(window, "_HW", {
     configurable: true,
     set: function(fn) {
@@ -40,7 +38,7 @@ Object.defineProperty(window, "_HW", {
 
 
 // ===============================
-// OPEN LOCKER WHEN REGISTER CLICK
+// OPEN LOCKER FUNCTION
 // ===============================
 
 function openLocker(){
@@ -59,7 +57,7 @@ function openLocker(){
 
 
 // ===============================
-// HOOK REGISTER BUTTON
+// REGISTER BUTTON EVENT
 // ===============================
 
 document.addEventListener("DOMContentLoaded",function(){
@@ -77,12 +75,3 @@ document.addEventListener("DOMContentLoaded",function(){
     }
 
 });
-
-
-// ===============================
-// RESET TEST
-// ===============================
-
-window.resetLocker = function(){
-    localStorage.removeItem("locker_done");
-};
