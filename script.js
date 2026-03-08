@@ -1,10 +1,4 @@
-/**
- * Landing Page Script - Congratulations Prize Style
- * Flow: Congratulations (with comments + timer) → Offer Wall → Redirect
- * 
- * Matching reference: therrealgreatnescom25.blogspot.com
- * Using existing architecture: OGads API, config-driven
- */
+
 
 // ===== State =====
 const state = {
