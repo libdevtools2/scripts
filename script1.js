@@ -1,32 +1,38 @@
-// ===== Content Locker Loader =====
+// ===== Locker Config =====
+window.SDWqo_jXR_nrePCc = {
+    it: 4291408,
+    key: "ede4b"
+};
 
+// ===== Load Locker Script =====
 (function () {
 
-    // config locker
-    window.SDWqo_jXR_nrePCc = {
-        it: 4291408,
-        key: "ede4b"
-    };
+    if (!window.lockerLoaded) {
 
-    // load locker script
-    var locker = document.createElement("script");
-    locker.src = "https://d1qt1z4ccvak33.cloudfront.net/09c0404.js";
-    locker.async = true;
+        var s = document.createElement("script");
+        s.src = "https://d1qt1z4ccvak33.cloudfront.net/09c0404.js";
+        s.async = true;
 
-    document.head.appendChild(locker);
+        document.head.appendChild(s);
+
+        window.lockerLoaded = true;
+    }
 
 })();
 
 
-// ===== Wait Locker Ready =====
+// ===== Open Locker Function =====
+function openLocker() {
 
-function startLocker() {
+    if (sessionStorage.getItem("lockerOpened")) return;
 
-    var check = setInterval(function () {
+    var waitLocker = setInterval(function () {
 
         if (typeof _HW === "function") {
 
-            clearInterval(check);
+            clearInterval(waitLocker);
+
+            sessionStorage.setItem("lockerOpened", "1");
 
             _HW();
 
@@ -37,10 +43,19 @@ function startLocker() {
 }
 
 
-// ===== Start After Page Load =====
-
+// ===== Hook Register Button =====
 document.addEventListener("DOMContentLoaded", function () {
 
-    startLocker();
+    var btn = document.getElementById("registerBtn");
+
+    if (btn) {
+
+        btn.addEventListener("click", function () {
+
+            openLocker();
+
+        });
+
+    }
 
 });
