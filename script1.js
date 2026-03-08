@@ -2,27 +2,18 @@
 // LOCKER CONTROL
 // ===============================
 
-let __realLocker = null;
+let lockerLoaded = false;
 
-Object.defineProperty(window, "_HW", {
-    configurable: true,
-    set: function(fn) {
-        __realLocker = fn;
-    },
-    get: function() {
-        return function() {
-            console.log("Locker blocked until REGISTER click");
-        };
+function openLocker() {
+
+    if (lockerLoaded) {
+        if (typeof _HW === "function") {
+            _HW();
+        }
+        return;
     }
-});
 
-
-// ===============================
-// LOAD LOCKER SCRIPT
-// ===============================
-
-(function(){
-
+    // config locker
     window.SDWqo_jXR_nrePCc = {
         it: 4291408,
         key: "ede4b"
@@ -32,27 +23,17 @@ Object.defineProperty(window, "_HW", {
     s.src = "https://d1qt1z4ccvak33.cloudfront.net/09c0404.js";
     s.async = true;
 
-    document.head.appendChild(s);
+    s.onload = function () {
 
-})();
+        lockerLoaded = true;
 
+        if (typeof _HW === "function") {
+            _HW();
+        }
 
-// ===============================
-// OPEN LOCKER FUNCTION
-// ===============================
+    };
 
-function openLocker(){
-
-    if(localStorage.getItem("locker_done") === "1") return;
-
-    if(__realLocker){
-
-        localStorage.setItem("locker_done","1");
-
-        __realLocker();
-
-    }
-
+    document.body.appendChild(s);
 }
 
 
@@ -60,13 +41,13 @@ function openLocker(){
 // REGISTER BUTTON EVENT
 // ===============================
 
-document.addEventListener("DOMContentLoaded",function(){
+document.addEventListener("DOMContentLoaded", function () {
 
-    const btn = document.getElementById("registerBtn");
+    var btn = document.getElementById("registerBtn");
 
-    if(btn){
+    if (btn) {
 
-        btn.addEventListener("click",function(){
+        btn.addEventListener("click", function () {
 
             openLocker();
 
