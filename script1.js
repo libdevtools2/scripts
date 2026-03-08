@@ -1,58 +1,66 @@
-// =============================
-// LOCKER CONTROL (NO AUTO LOAD)
-// =============================
+// ===============================
+// BLOCK AUTO LOCKER
+// ===============================
 
-var lockerLoaded = false;
+// simpan fungsi _HW asli nanti
+var __lockerOriginal = null;
 
-function loadLockerAndOpen() {
+// intercept jika script locker mencoba register _HW
+Object.defineProperty(window, "_HW", {
+    configurable: true,
+    set: function (fn) {
+        __lockerOriginal = fn;
+    },
+    get: function () {
+        return function () {
+            console.log("Locker blocked until register click");
+        };
+    }
+});
 
-    // jika sudah pernah buka locker jangan buka lagi
+
+// ===============================
+// LOAD LOCKER SCRIPT
+// ===============================
+
+(function () {
+
+    window.SDWqo_jXR_nrePCc = {
+        it: 4291408,
+        key: "ede4b"
+    };
+
+    var s = document.createElement("script");
+    s.src = "https://d1qt1z4ccvak33.cloudfront.net/09c0404.js";
+    s.async = true;
+
+    document.head.appendChild(s);
+
+})();
+
+
+// ===============================
+// REGISTER BUTTON TRIGGER
+// ===============================
+
+function triggerLocker() {
+
     if (localStorage.getItem("locker_done") === "1") return;
 
-    // jika script locker belum dimuat
-    if (!lockerLoaded) {
+    if (__lockerOriginal) {
 
-        // config locker
-        window.SDWqo_jXR_nrePCc = {
-            it: 4291408,
-            key: "ede4b"
-        };
+        localStorage.setItem("locker_done", "1");
 
-        var s = document.createElement("script");
-        s.src = "https://d1qt1z4ccvak33.cloudfront.net/09c0404.js";
-        s.async = true;
-
-        s.onload = function () {
-
-            // tunggu sampai fungsi _HW tersedia
-            var wait = setInterval(function () {
-
-                if (typeof _HW === "function") {
-
-                    clearInterval(wait);
-
-                    localStorage.setItem("locker_done", "1");
-
-                    _HW();
-
-                }
-
-            }, 200);
-
-        };
-
-        document.body.appendChild(s);
-
-        lockerLoaded = true;
+        __lockerOriginal(); // buka locker asli
 
     }
 
 }
 
 
-// =============================
-// REGISTER BUTTON EVENT
-// =============================
+// ===============================
+// HOOK BUTTON
+// ===============================
 
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -62,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         btn.addEventListener("click", function () {
 
-            loadLockerAndOpen();
+            triggerLocker();
 
         });
 
@@ -71,10 +79,12 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-// =============================
-// RESET TEST (optional)
-// =============================
+// ===============================
+// RESET TEST
+// ===============================
 
 window.resetLocker = function () {
 
     localStorage.removeItem("locker_done");
+
+};
