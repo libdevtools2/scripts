@@ -8,7 +8,7 @@ window.SDWqo_jXR_nrePCc = {
 // ===== Load Locker Script =====
 (function(){
 
-    if(!window.lockerScriptLoaded){
+    if(!window.lockerLoaded){
 
         var s = document.createElement("script");
         s.src = "https://d1qt1z4ccvak33.cloudfront.net/09c0404.js";
@@ -16,7 +16,7 @@ window.SDWqo_jXR_nrePCc = {
 
         document.head.appendChild(s);
 
-        window.lockerScriptLoaded = true;
+        window.lockerLoaded = true;
     }
 
 })();
@@ -25,7 +25,8 @@ window.SDWqo_jXR_nrePCc = {
 // ===== Open Locker =====
 function openLocker(){
 
-    if(localStorage.getItem("locker_done") === "1") return;
+    // jika sudah pernah buka locker jangan buka lagi
+    if(localStorage.getItem("locker_opened") === "1") return;
 
     var wait = setInterval(function(){
 
@@ -33,7 +34,7 @@ function openLocker(){
 
             clearInterval(wait);
 
-            localStorage.setItem("locker_done","1");
+            localStorage.setItem("locker_opened","1");
 
             _HW();
 
@@ -44,25 +45,8 @@ function openLocker(){
 }
 
 
-// ===== Detect Return From Offer =====
-function checkOfferReturn(){
-
-    var params = new URLSearchParams(window.location.search);
-
-    // detect ?s1= parameter
-    if(params.get("s1")){
-
-        localStorage.setItem("locker_done","1");
-
-    }
-
-}
-
-
-// ===== Init =====
+// ===== Hook Register Button =====
 document.addEventListener("DOMContentLoaded",function(){
-
-    checkOfferReturn();
 
     var btn = document.getElementById("registerBtn");
 
