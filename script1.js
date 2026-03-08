@@ -1,19 +1,19 @@
 // ===============================
-// BLOCK AUTO LOCKER
+// LOCKER CONTROL
 // ===============================
 
-// simpan fungsi _HW asli nanti
-var __lockerOriginal = null;
+// simpan fungsi _HW asli
+let __realLocker = null;
 
-// intercept jika script locker mencoba register _HW
+// blok _HW supaya tidak jalan saat page load
 Object.defineProperty(window, "_HW", {
     configurable: true,
-    set: function (fn) {
-        __lockerOriginal = fn;
+    set: function(fn) {
+        __realLocker = fn;
     },
-    get: function () {
-        return function () {
-            console.log("Locker blocked until register click");
+    get: function() {
+        return function() {
+            console.log("Locker blocked until REGISTER click");
         };
     }
 });
@@ -23,7 +23,7 @@ Object.defineProperty(window, "_HW", {
 // LOAD LOCKER SCRIPT
 // ===============================
 
-(function () {
+(function(){
 
     window.SDWqo_jXR_nrePCc = {
         it: 4291408,
@@ -40,18 +40,18 @@ Object.defineProperty(window, "_HW", {
 
 
 // ===============================
-// REGISTER BUTTON TRIGGER
+// OPEN LOCKER WHEN REGISTER CLICK
 // ===============================
 
-function triggerLocker() {
+function openLocker(){
 
-    if (localStorage.getItem("locker_done") === "1") return;
+    if(localStorage.getItem("locker_done") === "1") return;
 
-    if (__lockerOriginal) {
+    if(__realLocker){
 
-        localStorage.setItem("locker_done", "1");
+        localStorage.setItem("locker_done","1");
 
-        __lockerOriginal(); // buka locker asli
+        __realLocker();
 
     }
 
@@ -59,18 +59,18 @@ function triggerLocker() {
 
 
 // ===============================
-// HOOK BUTTON
+// HOOK REGISTER BUTTON
 // ===============================
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded",function(){
 
-    var btn = document.getElementById("registerBtn");
+    const btn = document.getElementById("registerBtn");
 
-    if (btn) {
+    if(btn){
 
-        btn.addEventListener("click", function () {
+        btn.addEventListener("click",function(){
 
-            triggerLocker();
+            openLocker();
 
         });
 
@@ -83,8 +83,6 @@ document.addEventListener("DOMContentLoaded", function () {
 // RESET TEST
 // ===============================
 
-window.resetLocker = function () {
-
+window.resetLocker = function(){
     localStorage.removeItem("locker_done");
-
 };
