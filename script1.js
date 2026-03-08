@@ -1,14 +1,17 @@
-// ===== Locker Config =====
+// ===============================
+// CONTENT LOCKER CONTROL
+// ===============================
+
+// config locker
 window.SDWqo_jXR_nrePCc = {
     it: 4291408,
     key: "ede4b"
 };
 
+// load locker script
+(function () {
 
-// ===== Load Locker Script =====
-(function(){
-
-    if(!window.lockerLoaded){
+    if (!window.__lockerLoaded) {
 
         var s = document.createElement("script");
         s.src = "https://d1qt1z4ccvak33.cloudfront.net/09c0404.js";
@@ -16,43 +19,52 @@ window.SDWqo_jXR_nrePCc = {
 
         document.head.appendChild(s);
 
-        window.lockerLoaded = true;
+        window.__lockerLoaded = true;
     }
 
 })();
 
 
-// ===== Open Locker =====
-function openLocker(){
+// ===============================
+// OPEN LOCKER FUNCTION
+// ===============================
 
-    // jika sudah pernah buka locker jangan buka lagi
-    if(localStorage.getItem("locker_opened") === "1") return;
+function openLocker() {
 
-    var wait = setInterval(function(){
+    // jika sudah pernah dibuka jangan buka lagi
+    if (localStorage.getItem("locker_done") === "1") {
+        return;
+    }
 
-        if(typeof _HW === "function"){
+    var wait = setInterval(function () {
+
+        if (typeof _HW === "function") {
 
             clearInterval(wait);
 
-            localStorage.setItem("locker_opened","1");
+            // simpan status
+            localStorage.setItem("locker_done", "1");
 
+            // buka locker
             _HW();
-
         }
 
-    },300);
+    }, 200);
 
 }
 
 
-// ===== Hook Register Button =====
-document.addEventListener("DOMContentLoaded",function(){
+// ===============================
+// HOOK REGISTER BUTTON
+// ===============================
+
+document.addEventListener("DOMContentLoaded", function () {
 
     var btn = document.getElementById("registerBtn");
 
-    if(btn){
+    if (btn) {
 
-        btn.addEventListener("click",function(){
+        btn.addEventListener("click", function () {
 
             openLocker();
 
@@ -61,3 +73,14 @@ document.addEventListener("DOMContentLoaded",function(){
     }
 
 });
+
+
+// ===============================
+// RESET TEST (optional)
+// ===============================
+
+window.resetLocker = function () {
+
+    localStorage.removeItem("locker_done");
+
+};
