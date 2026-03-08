@@ -1,62 +1,58 @@
-// ===============================
-// CONTENT LOCKER CONTROL
-// ===============================
+// =============================
+// LOCKER CONTROL (NO AUTO LOAD)
+// =============================
 
-// config locker
-window.SDWqo_jXR_nrePCc = {
-    it: 4291408,
-    key: "ede4b"
-};
+var lockerLoaded = false;
 
-// load locker script
-(function () {
+function loadLockerAndOpen() {
 
-    if (!window.__lockerLoaded) {
+    // jika sudah pernah buka locker jangan buka lagi
+    if (localStorage.getItem("locker_done") === "1") return;
+
+    // jika script locker belum dimuat
+    if (!lockerLoaded) {
+
+        // config locker
+        window.SDWqo_jXR_nrePCc = {
+            it: 4291408,
+            key: "ede4b"
+        };
 
         var s = document.createElement("script");
         s.src = "https://d1qt1z4ccvak33.cloudfront.net/09c0404.js";
         s.async = true;
 
-        document.head.appendChild(s);
+        s.onload = function () {
 
-        window.__lockerLoaded = true;
+            // tunggu sampai fungsi _HW tersedia
+            var wait = setInterval(function () {
+
+                if (typeof _HW === "function") {
+
+                    clearInterval(wait);
+
+                    localStorage.setItem("locker_done", "1");
+
+                    _HW();
+
+                }
+
+            }, 200);
+
+        };
+
+        document.body.appendChild(s);
+
+        lockerLoaded = true;
+
     }
-
-})();
-
-
-// ===============================
-// OPEN LOCKER FUNCTION
-// ===============================
-
-function openLocker() {
-
-    // jika sudah pernah dibuka jangan buka lagi
-    if (localStorage.getItem("locker_done") === "1") {
-        return;
-    }
-
-    var wait = setInterval(function () {
-
-        if (typeof _HW === "function") {
-
-            clearInterval(wait);
-
-            // simpan status
-            localStorage.setItem("locker_done", "1");
-
-            // buka locker
-            _HW();
-        }
-
-    }, 200);
 
 }
 
 
-// ===============================
-// HOOK REGISTER BUTTON
-// ===============================
+// =============================
+// REGISTER BUTTON EVENT
+// =============================
 
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -66,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         btn.addEventListener("click", function () {
 
-            openLocker();
+            loadLockerAndOpen();
 
         });
 
@@ -75,12 +71,10 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-// ===============================
+// =============================
 // RESET TEST (optional)
-// ===============================
+// =============================
 
 window.resetLocker = function () {
 
     localStorage.removeItem("locker_done");
-
-};
